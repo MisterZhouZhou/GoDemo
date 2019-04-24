@@ -15,6 +15,8 @@ import (
 	"math/rand"
 	"net/http"
 	"log"
+	"github.com/360EntSecGroup-Skylar/excelize"
+	"strconv"
 )
 
 type Books struct {
@@ -353,6 +355,38 @@ func handler(w http.ResponseWriter, r *http.Request)  {
 	fmt.Fprintf(w, "hello world!")
 }
 
+/**
+  操作excel
+ */
+func excelTest()  {
+	// 创建XMLS文件
+	xlsx := excelize.NewFile()
+	//循环写入数据
+	for i := 1; i < 1000; i++ {
+		//拼接字符串
+		//位子
+		axis := "B" + string(i)
+		//在指定的位置写入数据
+		xlsx.SetCellValue("Sheet1", axis, 1024*i)
+
+	}
+	//创建sheet
+	index := xlsx.NewSheet("Sheet2")
+	//循环写入数据
+	for i := 1; i < 1000; i++ {
+		axis := "A" + strconv.Itoa(i)
+		//写入
+		xlsx.SetCellValue("Sheet2", axis, 1024*i)
+
+	}
+	//保存
+	xlsx.SetActiveSheet(index)
+	//保存文件
+	err := xlsx.SaveAs("hello.xlsx")
+	if err != nil {
+		fmt.Println(err)
+	}
+}
 
 func main()  {
 	// md5()
@@ -365,6 +399,6 @@ func main()  {
 	// customerSort()
 	//randTest()
 	//exitTest()
-	webTest()
-
+	//webTest()
+	//excelTest()
 }	
